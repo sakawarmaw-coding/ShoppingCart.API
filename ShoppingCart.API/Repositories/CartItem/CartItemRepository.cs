@@ -5,7 +5,7 @@ namespace ShoppingCart.API.Repositories.CartItem
 {
     public class CartItemRepository : ICartItemRepository
     {
-        private readonly AppDbContext _appDbContext; 
+        private readonly AppDbContext _appDbContext;
 
         public CartItemRepository(AppDbContext appDbContext)
         {
@@ -22,7 +22,7 @@ namespace ShoppingCart.API.Repositories.CartItem
                     .tblCartItem.AsNoTracking()
                     .OrderByDescending(x => x.Id)
                     .ToListAsync();
-               var lst = lstCart.Select(x => x.Change()).ToList();
+                var lst = lstCart.Select(x => x.Change()).ToList();
                 var responseModel = new CartItemListRespModel() { lstCart = lst };
 
                 return responseModel;
@@ -41,10 +41,25 @@ namespace ShoppingCart.API.Repositories.CartItem
         {
             try
             {
+                string userName = string.Empty;
+                string productName = string.Empty;
+                var user = _appDbContext.tblUser.FirstOrDefault(x => x.Id == requestModel.UserId);
+                if (user is not null)
+                {
+                    userName = user.UserName;
+                }
+                var product = _appDbContext.tblProduct.FirstOrDefault(x => x.Id == requestModel.ProductId);
+                if (product is not null)
+                {
+                    productName = product.Name;
+                }
+
                 var dataModel = new TblCartItem
                 {
-                    UserId= requestModel.UserId,
+                    UserId = requestModel.UserId,
+                    UserName= userName,
                     ProductId = requestModel.ProductId,
+                    ProductName = productName,
                     Quantity = requestModel.Quantity,
                 };
                 await _appDbContext.tblCartItem.AddAsync(dataModel);

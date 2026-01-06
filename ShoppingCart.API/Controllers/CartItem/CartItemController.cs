@@ -15,7 +15,7 @@ namespace ShoppingCart.API.Controllers.CartItem
             _bL_CartItem = bL_CartItem;
         }
 
-        [HttpGet]
+        [HttpGet("cartItemList")]
         public async Task<IActionResult> GetCartItems()
         {
             try
@@ -29,7 +29,7 @@ namespace ShoppingCart.API.Controllers.CartItem
             }
         }
 
-        [HttpPost]
+        [HttpPost("createCartItem")]
         public async Task<IActionResult> CreateCartItem([FromBody] CartItemReqModel requestModel)
         {
             try
@@ -43,12 +43,12 @@ namespace ShoppingCart.API.Controllers.CartItem
             }
         }
 
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> CheckOutCartItem(int UserId)
+        [HttpPatch("checkoutCartItem/{userId}")]
+        public async Task<IActionResult> CheckOutCartItem(int userId)
         {
             try
             {
-                int result = await _bL_CartItem.CheckOutCartItemAsync(UserId);
+                int result = await _bL_CartItem.CheckOutCartItemAsync(userId);
                 return result > 0 ? Accepted("Checkout Successfully.") : BadRequest("Checkout Fail.");
             }
             catch (Exception ex)
@@ -57,12 +57,12 @@ namespace ShoppingCart.API.Controllers.CartItem
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCartItem(int Id)
+        [HttpDelete("deleteCartItem/{id}")]
+        public async Task<IActionResult> DeleteCartItem(int id)
         {
             try
             {
-                int result = await _bL_CartItem.DeleteCartItemAsync(Id);
+                int result = await _bL_CartItem.DeleteCartItemAsync(id);
                 return result > 0 ? Accepted("CartItem Deleted.") : BadRequest("Delete Fail.");
             }
             catch (Exception ex)
