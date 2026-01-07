@@ -1,6 +1,6 @@
 ﻿namespace ShoppingCart.API.Commands.Product.Delete;
 
-public class DeleteProductCommandHandler : IRequestHandler<DeleteCartItemCommand, int>
+public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, int>
 {
     private readonly IProductRepository _productRepository;
 
@@ -10,7 +10,7 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteCartItemCommand
     }
 
     public async Task<int> Handle(
-        DeleteCartItemCommand request,
+        DeleteProductCommand request,
         CancellationToken cancellationToken
     )
     {

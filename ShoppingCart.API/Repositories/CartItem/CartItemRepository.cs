@@ -54,15 +54,27 @@ namespace ShoppingCart.API.Repositories.CartItem
                     productName = product.Name;
                 }
 
-                var dataModel = new TblCartItem
+                var item =
+                    await _appDbContext
+                        .tblCartItem.AsNoTracking()
+                        .FirstOrDefaultAsync(x => x.UserId == requestModel.UserId && x.ProductId==requestModel.ProductId);
+                if (item is null)
                 {
-                    UserId = requestModel.UserId,
-                    UserName= userName,
-                    ProductId = requestModel.ProductId,
-                    ProductName = productName,
-                    Quantity = requestModel.Quantity,
-                };
-                await _appDbContext.tblCartItem.AddAsync(dataModel);
+                    var dataModel = new TblCartItem
+                    {
+                        UserId = requestModel.UserId,
+                        UserName = userName,
+                        ProductId = requestModel.ProductId,
+                        ProductName = productName,
+                        Quantity = requestModel.Quantity,
+                    };
+                    await _appDbContext.tblCartItem.AddAsync(dataModel);
+                }
+                else
+                {
+                    item.Quantity += requestModel.Quantity;
+                   _appDbContext.Entry(item).State = EntityState.Modified;
+                }
 
                 return await _appDbContext.SaveChangesAsync();
             }

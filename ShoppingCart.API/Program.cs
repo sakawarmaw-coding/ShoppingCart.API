@@ -37,9 +37,12 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<DA_CartItem>());
 
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<DA_Product>());
+
 builder.Services.AddAuthentication(opt => {
     opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 })
     .AddJwtBearer(options =>
     {
