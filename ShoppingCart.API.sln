@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{44EEDD31-A2E3-43D7-8308-E5D4733363A7}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
+		..\..\..\Desktop\ShoppingCartAPI.postman_collection.json = ..\..\..\Desktop\ShoppingCartAPI.postman_collection.json
 		..\..\..\Desktop\ShoppingCartSystem.sql = ..\..\..\Desktop\ShoppingCartSystem.sql
 	EndProjectSection
 EndProject
