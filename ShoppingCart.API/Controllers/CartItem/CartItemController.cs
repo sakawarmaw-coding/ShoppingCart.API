@@ -1,74 +1,72 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using ShoppingCart.API.Business.Interface;
+﻿
+namespace ShoppingCart.API.Controllers.CartItem;
 
-namespace ShoppingCart.API.Controllers.CartItem
+[Route("api/[controller]")]
+[ApiController]
+[Authorize]
+public class CartItemController : BaseController
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CartItemController : BaseController
+    private readonly ICartItemBL _bL_CartItem;
+
+    public CartItemController(ICartItemBL bL_CartItem)
     {
-        private readonly ICartItemBL _bL_CartItem;
+        _bL_CartItem = bL_CartItem;
+    }
 
-        public CartItemController(ICartItemBL bL_CartItem)
+    [HttpGet("cartItemList")]
+    public async Task<IActionResult> GetCartItems()
+    {
+        try
         {
-            _bL_CartItem = bL_CartItem;
+            var lst = await _bL_CartItem.GetCartItemListAsync();
+            return Content(lst);
         }
-
-        [HttpGet("cartItemList")]
-        public async Task<IActionResult> GetCartItems()
+        catch (Exception ex)
         {
-            try
-            {
-                var lst = await _bL_CartItem.GetCartItemListAsync();
-                return Content(lst);
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
+            return InternalServerError(ex);
         }
+    }
 
-        [HttpPost("createCartItem")]
-        public async Task<IActionResult> CreateCartItem([FromBody] CartItemReqModel requestModel)
+    [HttpPost("createCartItem")]
+    public async Task<IActionResult> CreateCartItem([FromBody] CartItemReqModel requestModel)
+    {
+        try
         {
-            try
-            {
-                int result = await _bL_CartItem.CreateCartItemAsync(requestModel);
-                return result > 0 ? Created("CartItem Created.") : BadRequest("Creating Fail.");
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
+            int result = await _bL_CartItem.CreateCartItemAsync(requestModel);
+            return result > 0 ? Created("CartItem Created.") : BadRequest("Creating Fail.");
         }
-
-        [HttpPatch("checkoutCartItem/{userId}")]
-        public async Task<IActionResult> CheckOutCartItem(int userId)
+        catch (Exception ex)
         {
-            try
-            {
-                int result = await _bL_CartItem.CheckOutCartItemAsync(userId);
-                return result > 0 ? Accepted("Checkout Successfully.") : BadRequest("Checkout Fail.");
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
+            return InternalServerError(ex);
         }
+    }
 
-        [HttpDelete("deleteCartItem/{id}")]
-        public async Task<IActionResult> DeleteCartItem(int id)
+    [HttpPatch("checkoutCartItem/{userId}")]
+    public async Task<IActionResult> CheckOutCartItem(int userId)
+    {
+        try
         {
-            try
-            {
-                int result = await _bL_CartItem.DeleteCartItemAsync(id);
-                return result > 0 ? Accepted("CartItem Deleted.") : BadRequest("Delete Fail.");
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
+            int result = await _bL_CartItem.CheckOutCartItemAsync(userId);
+            return result > 0 ? Accepted("Checkout Successfully.") : BadRequest("Checkout Fail.");
+        }
+        catch (Exception ex)
+        {
+            return InternalServerError(ex);
+        }
+    }
+
+    [HttpDelete("deleteCartItem/{id}")]
+    public async Task<IActionResult> DeleteCartItem(int id)
+    {
+        try
+        {
+            int result = await _bL_CartItem.DeleteCartItemAsync(id);
+            return result > 0 ? Accepted("CartItem Deleted.") : BadRequest("Delete Fail.");
+        }
+        catch (Exception ex)
+        {
+            return InternalServerError(ex);
         }
     }
 }
+

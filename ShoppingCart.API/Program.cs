@@ -24,17 +24,23 @@ string ConnectionString = builder.Configuration.GetConnectionString("DbConnectio
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(ConnectionString));
 
 builder.Services.AddScoped<ICartItemBL, BL_CartItem>();
+builder.Services.AddScoped<IProductBL, BL_Product>();
 builder.Services.AddScoped<ICartItemDA, DA_CartItem>();
+builder.Services.AddScoped<IProductDA, DA_Product>();
 builder.Services.AddScoped<CartItemValidator>();
+builder.Services.AddScoped<ProductValidator>();
 
 builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<DA_CartItem>());
 
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(opt => {
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters

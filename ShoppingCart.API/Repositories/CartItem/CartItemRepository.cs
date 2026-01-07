@@ -22,7 +22,7 @@ namespace ShoppingCart.API.Repositories.CartItem
                     .tblCartItem.AsNoTracking()
                     .OrderByDescending(x => x.Id)
                     .ToListAsync();
-                var lst = lstCart.Select(x => x.Change()).ToList();
+                var lst = lstCart.Select(x => x.ChangeCartItemModel()).ToList();
                 var responseModel = new CartItemListRespModel() { lstCart = lst };
 
                 return responseModel;

@@ -9,7 +9,7 @@ namespace ShoppingCart.Models
 {
     public static class ChangeModel
     {
-        public static CartItemModel Change(this TblCartItem dataModel)
+        public static CartItemModel ChangeCartItemModel(this TblCartItem dataModel)
         {
             return new CartItemModel
             {
@@ -21,5 +21,17 @@ namespace ShoppingCart.Models
                 ProductName = dataModel.ProductName
             };
         }
+
+        public static ProductModel ChangeProductModel(this TblProduct dataModel)
+        {
+            return new ProductModel
+            {
+                Id = dataModel.Id,
+                Name= dataModel.Name,
+                Price= dataModel.Price
+            };
+        }
+
+
     }
 }
